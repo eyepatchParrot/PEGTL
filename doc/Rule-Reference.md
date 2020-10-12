@@ -32,6 +32,7 @@ When at least one parameter is given, i.e. `seq< A >` or `seq< A, B, C >`, `R` i
 
 ## Contents
 
+* [Equivalence Tables](#equivalence-tables)
 * [Meta Rules](#meta-rules)
 * [Combinators](#combinators)
 * [Convenience](#convenience)
@@ -46,6 +47,45 @@ When at least one parameter is given, i.e. `seq< A >` or `seq< A, B, C >`, `R` i
   * [ICU Rules for Value Properties](#icu-rules-for-value-properties)
 * [Binary Rules](#binary-rules)
 * [Full Index](#full-index)
+
+## Equivalence Tables
+
+Atomic rules:
+* [`bof`](#bof) <sup>[(atomic rules)](#atomic-rules)</sup>, [`eof`](#eof) <sup>[(atomic rules)](#atomic-rules)</sup>
+* [`bytes< Num >`](#bytes-num-) <sup>[(atomic rules)](#atomic-rules)</sup>
+* [`raise< T >`](#raise-t-) <sup>[(atomic rules)](#atomic-rules)</sup>
+* [`disable< R... >`](#disable-r-) <sup>[(meta rules)](#meta-rules)</sup>
+<table>
+<tr><th>PEG </th>                             <th>tao::pegtl::</th></tr>
+<tr><td>&*e*</td>                             <td>[`at< R... >`](#at-r-) <sup>[(combinators)](#combinators)</sup>    </td></tr>
+<tr><td>!*e*</td>                             <td>[`not_at< R... >`](#not_at-r-) <sup>[(combinators)](#combinators)</sup></td></tr>
+<tr><td>*e*?</td>                             <td>[`opt< R... >`](#opt-r-) <sup>[(combinators)](#combinators)</sup>   </td></tr>
+<tr><td>*e*+</td>                             <td>[`plus< R... >`](#plus-r-) <sup>[(combinators)](#combinators)</sup>  </td></tr>
+<tr><td>*e*<sub>1</sub>*e*<sub>2</sub></td>   <td>[`seq< R... >`](#seq-r-) <sup>[(combinators)](#combinators)</sup>   </td></tr>
+<tr><td>*e*<sub>1</sub> / *e*<sub>2</sub></td><td>[`sor< R... >`](#sor-r-) <sup>[(combinators)](#combinators)</sup> </td></tr>
+<tr><td>*e**</td>                             <td>[`star< R... >`](#star-r-) <sup>[(combinators)](#combinators)</sup></td></tr>
+<tr><th>Regex</th>                   <th>tao::pegtl::</th></tr>
+<tr><td>`[0-9]`</td>                 <td>[`ascii::digit`](#digit) <sup>[(ascii rules)](#ascii-rules)</sup>, [`ascii::range<'0', '9'>`](#range-c-d-) <sup>[(ascii rules)](#ascii-rules)</sup></td></tr>
+<tr><td>`[^0-9]`</td>                <td>[`ascii::not_range<'0', '9'>`](#not_range-c-d-) <sup>[(ascii rules)](#ascii-rules)</sup></td></tr>
+<tr><td>`[a-zA-Z0-9]`</td>           <td>[`ascii::alnum`](#alnum) <sup>[(ascii rules)](#ascii-rules)</sup></td></tr>
+<tr><td>`[a-zA-Z]`</td>              <td>[`ascii::alpha`](#alpha) <sup>[(ascii rules)](#ascii-rules)</sup>, [`ascii::ranges<'a', 'z', 'A', 'Z'>`](#mask_ranges-m-c1-d1-c2-d2--) <sup>[(binary rules)](#binary-rules)</sup></td></tr>
+<tr><td>`[ \t]`</td>                 <td>[`ascii::blank`](#blank) <sup>[(ascii rules)](#ascii-rules)</sup>, [`one<' ', '\t'>`](#one-c-) <sup>[(ascii rules)](#ascii-rules)</sup></td></tr>
+<tr><td>`[^ \t]`</td>                <td>[`ascii::not_one<' ', '\t'>`](#not_one-c-) <sup>[(ascii rules)](#ascii-rules)</sup></td></tr>
+<tr><td>`[a-zA-Z_]`</td>             <td>[`ascii::identifier_first`](#identifier_first) <sup>[(ascii rules)](#ascii-rules)</sup></td></tr>
+<tr><td>`[a-zA-Z0-9_]`</td>          <td>[`ascii::identifier_other`](#identifier_other) <sup>[(ascii rules)](#ascii-rules)</sup></td></tr>
+<tr><td>`[a-zA-Z_][a-zA-Z0-9_]*`</td><td>[`ascii::identifier`](#identifier) <sup>[(ascii rules)](#ascii-rules)</sup></td></tr>
+<tr><td>`[ \n\r\t\v\f]`</td>         <td>[`ascii::space`](#space) <sup>[(ascii rules)](#ascii-rules)</sup></td></tr>
+<tr><td>`^`</td>                     <td>[`bol`](#bol) <sup>[(atomic rules)](#atomic-rules)</sup></td></tr>
+<tr><td>`$`</td>                     <td>[`eol`](#eol) <sup>[(atomic rules)](#atomic-rules)</sup></td></tr>
+<tr><td>`include`</td>               <td>[`string< 'i', 'n', 'c', 'l', 'u', 'd', 'e' >`](#string-c-) <sup>[(ascii rules)](#ascii-rules)</sup></td></tr>
+<tr><th>tao::pegtl::</th>        <th>tao::pegtl::</th></tr>
+<tr><td>[`ascii::any`](#any) <sup>[(ascii rules)](#ascii-rules)</sup></td>        <td>`bytes< 1 >`</td></tr>
+<tr><td>[`must< R... >`](#must-r-) <sup>[(convenience)](#convenience)</sup></td>      <td>`seq< sor< R, raise< R > >... >`</td></tr>
+<tr><td>[`if_must< R, S... >`](#if_must-r-s-) <sup>[(convenience)](#convenience)</sup></td><td>`seq< R, must< S... > >`</td></tr>
+<tr><td>[`until< R, S... >`](#until-r-s-) <sup>[(convenience)](#convenience)</sup></td>  <td>`seq< star< not_at< R >, S... >, R >`</td></tr>
+<tr><td>[`until< R >`](#until-r-) <sup>[(convenience)](#convenience)</sup></td>        <td>`until< R, any >`</td></tr>
+<tr><td>[`eolf`](#eolf) <sup>[(atomic rules)](#atomic-rules)</sup></td><td>`sor< eof, eol >`</td></tr>
+</table>
 
 ## Meta Rules
 
